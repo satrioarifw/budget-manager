@@ -10,7 +10,7 @@
 	{
 		"id": 2,
 		"category": "Shopping",
-		"amount": 157.56,
+		"amount": 157.50,
 		"currency": "USD",
 		"date": 1383401272,
 		"is_expense": true
