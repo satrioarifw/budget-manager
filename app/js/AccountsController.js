@@ -1,10 +1,11 @@
 var budgetControllers = angular.module('budgetControllers', []);
 
+
 budgetControllers.controller('AccountListCtrl', ['$scope', '$http',
 	function AccountListCtrl($scope, $http) {
 
 		//TODO: API endpoint: GET /accounts => returns: [{id, name, balance},..]
-	    $http.get('mock/accounts.json').success(function(data) {
+	    $http.get('http://localhost:3000/accounts').success(function(data) {
 	    	$scope.accounts = data;
 	    });
 	}]);
@@ -13,7 +14,7 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 	function AccountDetailCtrl($scope, $routeParams, $http) {
 
 		//TODO: API endpoint: GET /accounts/:id => returns: {id, name, balance, records}
-		$http.get('mock/accounts.json').success(function(data) {
+		$http.get('http://localhost:3000/accounts').success(function(data) {
 			for (var accountKey in data) {
 				if (data[accountKey].id == $routeParams.accountId) {
 					$scope.account = data[accountKey];
@@ -23,7 +24,7 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 		});
 
 		//TODO: API endpoint: GET /categories => returns: [name,..]
-		$http.get('mock/categories.json').success(function(data) {
+		$http.get('http://localhost:3000/categories').success(function(data) {
 	    	$scope.categories = data;
 	    });
 

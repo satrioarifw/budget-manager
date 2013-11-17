@@ -9,6 +9,7 @@ var budgetApp = angular.module('budgetApp', [
 
 budgetApp.config(['$routeProvider',
   function($routeProvider) {
+
     $routeProvider.
       when('/accounts', {
         templateUrl: 'partials/account-list.html',
