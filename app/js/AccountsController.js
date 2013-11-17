@@ -3,8 +3,6 @@ var budgetControllers = angular.module('budgetControllers', []);
 
 budgetControllers.controller('AccountListCtrl', ['$scope', '$http',
 	function AccountListCtrl($scope, $http) {
-
-		//TODO: API endpoint: GET /accounts => returns: [{id, name, balance},..]
 	    $http.get('http://localhost:3000/accounts').success(function(data) {
 	    	$scope.accounts = data;
 	    });
@@ -12,18 +10,10 @@ budgetControllers.controller('AccountListCtrl', ['$scope', '$http',
  
 budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$http',
 	function AccountDetailCtrl($scope, $routeParams, $http) {
-
-		//TODO: API endpoint: GET /accounts/:id => returns: {id, name, balance, records}
-		$http.get('http://localhost:3000/accounts').success(function(data) {
-			for (var accountKey in data) {
-				if (data[accountKey].id == $routeParams.accountId) {
-					$scope.account = data[accountKey];
-					return ;
-				}
-			}
+		$http.get('http://localhost:3000/accounts/' + $routeParams.accountId).success(function(data) {
+			$scope.account = data;
 		});
 
-		//TODO: API endpoint: GET /categories => returns: [name,..]
 		$http.get('http://localhost:3000/categories').success(function(data) {
 	    	$scope.categories = data;
 	    });

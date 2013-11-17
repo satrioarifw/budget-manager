@@ -4,12 +4,14 @@
 	    <thead>
 			<tr>
 				<th>Account Name</th>
+				<th>Balance</th>
 				<th>View Details</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="account in accounts">
 				<td>{{account.name}}</td>
+				<td>{{account.currency}} {{account.balance}}</td>
 				<td><a href="#/accounts/{{account.id}}"><button type="submit" class="btn btn-danger btn-xs">Details</button></a></td>
 			</tr>
 	    </tbody>
