@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="budgetApp">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -10,70 +10,12 @@
 
     <title>Budget Manager</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css?v=1" rel="stylesheet">
     <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular/angular-route.min.js"></script>
   </head>
   
   <body>
-    <div class="container" ng-app="budgetApp">
-
-      <div ng-controller="AccountsCtrl">
-        <h1>{{accounts.name}} Account</h1>
-
-        <p class="lead">Current Balance: {{accounts.currency}} {{getBalance()}}</p>
-       
-        <form name="addRecordForm">
-          <div class="row">
-            <div class="col-xs-2">
-              <input type="text" class="form-control" placeholder="Amount" ng-model="record.amount" required/>
-            </div>
-            <div class="col-xs-2">
-              <select class="form-control" ng-model="record.type">
-                <option value="0">Expense</option>
-                <option value="1">Income</option>
-              </select>
-            </div>
-            <div class="col-xs-2">
-              <select class="form-control" ng-model="record.category">
-                <option ng-repeat="category in categories">{{category}}</option>
-              </select>
-            </div>
-            <div class="col-xs-4">
-              <input type="text" class="form-control" placeholder="Description" ng-model="record.description">
-            </div>
-            <div class="col-xs-2">
-              <button type="submit" class="btn btn-primary" ng-click="addRecord(record)">Add</button>
-            </div>
-          </div>
-        </form>
-        {{debug}}
-        
-
-        <h1>History</h1>
-
-        <table class="table table-condensed table-hover">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Description</th>
-              <th>Date</th>
-              <th>Amount</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="record in accounts.records | orderBy:'date':!reverse" class="{{ record.is_expense ? 'danger' : 'success'}}">
-              <td>{{record.category}}</td>
-              <td>{{record.description}}</td>
-              <td>{{record.date | date:'medium'}}</td>
-              <td>{{accounts.currency}} {{record.amount}}</td>
-              <td><button type="submit" class="btn btn-danger btn-xs" ng-click="deleteRecord(record)">Delete</button></td>
-            </tr>
-          </tbody>
-        </table>
-        {{test}}
-      </div>
-    </div>
+    <div ng-view></div>
     
     <script src="lib/jquery/jquery-2.0.3.min.js"></script>
     <script src="lib/bootstrap/bootstrap.min.js"></script>

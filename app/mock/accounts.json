@@ -1,40 +1,82 @@
-{
-	"id": 1,
-	"name": "Checking",
-	"currency": "$",
-	"records":
-	[
-		{
-			"id": 1,
-			"category": "Salary",
-			"amount": 3175.56,
-			"date": 1383314872000,
-			"is_expense": false,
-			"description": ""
-		},
-		{
-			"id": 2,
-			"category": "Shopping",
-			"amount": 157.50,
-			"date": 1383401272000,
-			"is_expense": true,
-			"description": "Winter Clothes"
-		},
-		{
-			"id": 3,
-			"category": "Tabacco",
-			"amount":  18.00,
-			"date": 1383412072000,
-			"is_expense": true,
-			"description": "For the Party"
-		},
-		{
-			"id": 4,
-			"category": "Utilities",
-			"amount":  75.00,
-			"date": 1383671272000,
-			"is_expense": true,
-			"description": "Gaz Utility for past two months"
-		}
-	]
-}
+[
+	{
+		"id": 1,
+		"name": "Checking",
+		"currency": "$",
+		"records":
+		[
+			{
+				"id": 1,
+				"category": "Salary",
+				"amount": 3175.56,
+				"date": 1383314872000,
+				"is_expense": false,
+				"description": ""
+			},
+			{
+				"id": 2,
+				"category": "Shopping",
+				"amount": 157.50,
+				"date": 1383401272000,
+				"is_expense": true,
+				"description": "Winter Clothes"
+			},
+			{
+				"id": 3,
+				"category": "Tabacco",
+				"amount":  18.00,
+				"date": 1383412072000,
+				"is_expense": true,
+				"description": "For the Party"
+			},
+			{
+				"id": 4,
+				"category": "Utilities",
+				"amount":  75.00,
+				"date": 1383671272000,
+				"is_expense": true,
+				"description": "Gaz Utility for past two months"
+			}
+		]
+	},
+	{
+		"id": 2,
+		"name": "Saving",
+		"currency": "$",
+		"records":
+		[
+			{
+				"id": 1,
+				"category": "Transaction",
+				"amount": 300.0,
+				"date": 1383314872000,
+				"is_expense": false,
+				"description": "Saving Second Transaction"
+			},
+			{
+				"id": 2,
+				"category": "Transaction",
+				"amount": 400.0,
+				"date": 1383401272000,
+				"is_expense": false,
+				"description": "Saving Second Transaction"
+			},
+			{
+				"id": 3,
+				"category": "Transaction",
+				"amount": 500.0,
+				"date": 1383412072000,
+				"is_expense": false,
+				"description": "Saving Third Transaction"
+			},
+			{
+				"id": 4,
+				"category": "Transaction",
+				"amount": 300.0,
+				"date": 1383671272000,
+				"is_expense": false,
+				"description": "Saving Fourth Transaction"
+			}
+		]
+	}
+]
