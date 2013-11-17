@@ -2,14 +2,17 @@ var budgetControllers = angular.module('budgetControllers', []);
 
 budgetControllers.controller('AccountListCtrl', ['$scope', '$http',
 	function AccountListCtrl($scope, $http) {
-	    $http.get('mock/accounts.json').success(function(data) {
 
+		//TODO: API endpoint: GET /accounts => returns: [{id, name, balance},..]
+	    $http.get('mock/accounts.json').success(function(data) {
 	    	$scope.accounts = data;
 	    });
 	}]);
-
+ 
 budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$http',
 	function AccountDetailCtrl($scope, $routeParams, $http) {
+
+		//TODO: API endpoint: GET /accounts/:id => returns: {id, name, balance, records}
 		$http.get('mock/accounts.json').success(function(data) {
 			for (var accountKey in data) {
 				if (data[accountKey].id == $routeParams.accountId) {
@@ -19,6 +22,7 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 			}
 		});
 
+		//TODO: API endpoint: GET /categories => returns: [name,..]
 		$http.get('mock/categories.json').success(function(data) {
 	    	$scope.categories = data;
 	    });
@@ -64,6 +68,8 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 	    	r.amount 		= amount;
 	    	r.is_expense 	= record.type == 0 ? true : false;
 
+	    	//TODO: Call API to save record
+
 	    	//Set form inputs with default values
 	    	$scope.record = defaultAddRecordForm;
 
@@ -78,5 +84,27 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 	    			return ;
 	    		}
 	    	}
+	    }
+
+	    function displayChart() {
+	    	var records = $scope.account.records;
+	    	var totalExpense = 0;
+	    	var totalIncome = 0;
+
+	    	for (var recordKey in records) {
+	    		if (records[recordKey].is_expense) {
+	    			totalExpense += records[recordKey].amount;
+	    		}
+	    		else {
+	    			totalIncome += records[recordKey].amount;
+	    		}
+	    	}
+
+	    	var pieData = [{value: totalExpense,color:"#F38630"},
+		        		{value : totalIncome,color : "#E0E4CC"}];
+
+
+	      	//Display the data
+	    	new Chart(document.getElementById("canvas").getContext("2d")).Pie(pieData);
 	    }
 	}]);
