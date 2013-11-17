@@ -7,6 +7,16 @@ function AccountsCtrl($scope, $http) {
       $scope.categories = data;
     });
 
+    //init addRecordForm
+    var defaultAddRecordForm = {
+        amount: 0.0,
+        type: 0,
+        category: "Utilities",
+        description: ""
+    };
+    
+    $scope.record = defaultAddRecordForm
+
     $scope.getBalance = function() {
     	var records = $scope.accounts.records;
     	var balance = 0.0;
@@ -22,14 +32,24 @@ function AccountsCtrl($scope, $http) {
     };
 
     $scope.addRecord = function(record) {
-    	//todo add validation
+    	var amount = Number(record.amount);
+    	if (isNaN(amount) || amount <= 0) {
+    		$scope.record = defaultAddRecordForm;
+    		return ;
+    	}
 
-    	var r = new Object();
-    	r.category = record.category;
-    	r.description = record.description;
-    	r.date = new Date().getTime();
-    	r.amount = Number(record.amount);
-    	r.is_expense = record.type == 0 ? true : false;
+    	$scope.addRecordForm.$setPristine();
+
+    	//Create the new record with form input values
+    	var r 			= new Object();
+    	r.category 		= record.category;
+    	r.description 	= record.description;
+    	r.date 			= new Date().getTime();
+    	r.amount 		= amount;
+    	r.is_expense 	= record.type == 0 ? true : false;
+
+    	//Set form inputs with default values
+    	$scope.record = defaultAddRecordForm;
 
     	return $scope.accounts.records.push(r);
     };

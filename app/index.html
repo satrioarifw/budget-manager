@@ -22,28 +22,32 @@
 
         <p class="lead">Current Balance: {{accounts.currency}} {{getBalance()}}</p>
        
-        <div class="row">
-          <div class="col-xs-2">
-            <input type="text" class="form-control" placeholder="Amount" ng-model="record.amount">
+        <form name="addRecordForm">
+          <div class="row">
+            <div class="col-xs-2">
+              <input type="text" class="form-control" placeholder="Amount" ng-model="record.amount" required/>
+            </div>
+            <div class="col-xs-2">
+              <select class="form-control" ng-model="record.type">
+                <option value="0">Expense</option>
+                <option value="1">Income</option>
+              </select>
+            </div>
+            <div class="col-xs-2">
+              <select class="form-control" ng-model="record.category">
+                <option ng-repeat="category in categories">{{category}}</option>
+              </select>
+            </div>
+            <div class="col-xs-4">
+              <input type="text" class="form-control" placeholder="Description" ng-model="record.description">
+            </div>
+            <div class="col-xs-2">
+              <button type="submit" class="btn btn-primary" ng-click="addRecord(record)">Add</button>
+            </div>
           </div>
-          <div class="col-xs-2">
-            <select class="form-control" ng-model="record.type">
-              <option value="0">Expense</option>
-              <option value="1">Income</option>
-            </select>
-          </div>
-          <div class="col-xs-2">
-            <select class="form-control" ng-model="record.category">
-              <option ng-repeat="category in categories">{{category}}</option>
-            </select>
-          </div>
-          <div class="col-xs-4">
-            <input type="text" class="form-control" placeholder="Description" ng-model="record.description">
-          </div>
-          <div class="col-xs-2">
-            <button type="submit" class="btn btn-primary" ng-click="addRecord(record)">Add</button>
-          </div>
-        </div>
+        </form>
+        {{debug}}
+        
 
         <h1>History</h1>
 
@@ -54,7 +58,7 @@
               <th>Description</th>
               <th>Date</th>
               <th>Amount</th>
-              <th>Actions</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -63,7 +67,7 @@
               <td>{{record.description}}</td>
               <td>{{record.date | date:'medium'}}</td>
               <td>{{accounts.currency}} {{record.amount}}</td>
-              <td><button type="submit" class="btn btn-success btn-xs" ng-click="editRecord(record)">Edit</button> <button type="submit" class="btn btn-danger btn-xs" ng-click="deleteRecord(record)">Delete</button></td>
+              <td><button type="submit" class="btn btn-danger btn-xs" ng-click="deleteRecord(record)">Delete</button></td>
             </tr>
           </tbody>
         </table>
