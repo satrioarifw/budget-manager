@@ -1,6 +1,5 @@
 //Mocks
 var accounts = require('../mock/accounts.json');
-var error = {"error": true, "message": "No data available."};
 
 exports.list = function(req, res) {
 	for (var accountKey in accounts) {
@@ -20,6 +19,10 @@ exports.list = function(req, res) {
 };
 
 exports.create = function(req, res) {
+	if (req.body.name === undefined || req.body.currency === undefined) {
+		return res.json(400, {message:"Bad Data"});
+	}
+
 	var account 		= new Object();
 	account.name 		= req.body.name;
 	account.currency 	= req.body.currency;
@@ -27,28 +30,41 @@ exports.create = function(req, res) {
 	account.balance 	= 0;
 	account.records		= [];
 
+
 	accounts.push(account);
 	res.json(200, {id:account.id});
 };
 
 exports.delete = function(req, res) {
+	if (req.params.id === undefined || isNaN(Number(req.params.id))) {
+		return res.json(400, {message:"Bad Data"});
+	}
+
+	var accountId = req.params.id;
+
 	for(var accountKey in accounts) {
-		if (accounts[accountKey].id == req.params.id) {
+		if (accounts[accountKey].id == accountId) {
 			accounts.splice(accountKey, 1);
 			res.send(200);
 		}
 	}
 
-	res.json(404, error);
+	res.json(400, {message:"Bad Data"});
 };
 
 exports.detail = function(req, res) {
+	if (req.params.id === undefined || isNaN(Number(req.params.id))) {
+		return res.json(400, {message:"Bad Data"});
+	}
+
+	var accountId = req.params.id;
+
 	for(var accountKey in accounts) {
-		if (accounts[accountKey].id == req.params.id) {
+		if (accounts[accountKey].id == accountId) {
 			res.json(accounts[accountKey]);
 		}
 	}
 
-	res.json(404, error);
+	res.json(400, {message:"Bad Data"});
 };
 
