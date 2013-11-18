@@ -1,6 +1,3 @@
-var budgetControllers = angular.module('budgetControllers', []);
-
-
 budgetControllers.controller('AccountListCtrl', ['$scope', '$http',
 	function AccountListCtrl($scope, $http) {
 		$scope.accounts = [];
@@ -24,7 +21,7 @@ budgetControllers.controller('AccountListCtrl', ['$scope', '$http',
 	    	//Save Account
 	    	$http.post('http://localhost:3000/accounts', a).success(function(data) {
 	    		a.id = data.id;
-		    	$scope.accounts.push(a)
+		    	$scope.accounts.push(a);
 		    });
 	    };
 

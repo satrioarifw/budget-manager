@@ -1,0 +1,36 @@
+budgetControllers.controller('CategoryCtrl', ['$scope', '$http',
+	function CategoryCtrl($scope, $http) {
+
+		$http.get('http://localhost:3000/categories').success(function(data) {
+	    	$scope.categories = data;
+	    });
+
+	    $scope.addCategory = function(category) {
+	    	if (category === undefined || category.name == null) {
+	    		return ;
+	    	}
+
+	    	//Create the new category with form input values
+	    	var c = new Object();
+	    	c.name = category.name;
+
+	    	//Save Category
+	    	$http.post('http://localhost:3000/categories', c).success(function(data) {
+	    		c.id = data.id;
+		    	$scope.categories.push(c);
+		    });
+	    };
+
+	    $scope.deleteCategory = function(categoryId) {
+	    	$http.delete('http://localhost:3000/categories/' + categoryId).success(function(data) {
+	    		var categories = $scope.categories;
+		    	for (var categoryKey in categories) {
+		    		if (categories[categoryKey].id == categoryId) {
+		    			$scope.categories.splice(categoryKey, 1);
+		    			return ;
+		    		}
+	    		}
+		    });
+	    };
+	}
+]);

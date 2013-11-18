@@ -44,5 +44,11 @@ app.delete('/accounts/:accountId/records/:recordId', routes.records.delete);
 //Get all categories
 app.get('/categories', routes.categories.list);
 
+//Create new category
+app.post('/categories', routes.categories.create);
+
+//Delete Category
+app.delete('/categories/:categoryId', routes.categories.delete);
+
 console.log('Budget Manager Node.js server starts..');
 app.listen(3000);

@@ -4,8 +4,10 @@
 
 var budgetApp = angular.module('budgetApp', [
   'ngRoute',
-  'budgetControllers'
+  'budgetControllers',
 ]);
+
+var budgetControllers = angular.module('budgetControllers', []);
 
 budgetApp.config(['$routeProvider',
   function($routeProvider) {
@@ -18,6 +20,10 @@ budgetApp.config(['$routeProvider',
       when('/accounts/:accountId', {
         templateUrl: 'partials/account-detail.html',
         controller: 'AccountDetailCtrl'
+      }).
+      when('/categories', {
+        templateUrl: 'partials/category.html',
+        controller: 'CategoryCtrl'
       }).
       otherwise({
         redirectTo: '/accounts'
