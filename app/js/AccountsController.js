@@ -58,6 +58,7 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 	    	$scope.categories = data;
 	    })
 
+		//TODO Calculated by Node.js, use $scope.account.balance, delete this method
 	    $scope.getBalance = function() {
 	    	var records = $scope.account.records;
 	    	var balance = 0.0;
@@ -93,8 +94,9 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 
 
 	    	//Save Record
-	    	$http.post('http://localhost:3000/accounts/records', r).success(function(data) {
+	    	$http.post('http://localhost:3000/accounts/' + account_id + '/records', r).success(function(data) {
 	    		r.id = data.id;
+	    		//TODO Add data.balance with the new balance updated from the server
 		    	$scope.account.records.push(r)
 		    });
 	    };
