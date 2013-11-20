@@ -1,7 +1,7 @@
 budgetControllers.controller('CategoryCtrl', ['$scope', '$http',
 	function CategoryCtrl($scope, $http) {
 
-		$http.get('http://localhost:3000/categories').success(function(data) {
+		$http.get('http://localhost:3000/categories', {withCredentials: true}).success(function(data) {
 	    	$scope.categories = data;
 	    });
 
@@ -15,14 +15,14 @@ budgetControllers.controller('CategoryCtrl', ['$scope', '$http',
 	    	c.name = category.name;
 
 	    	//Save Category
-	    	$http.post('http://localhost:3000/categories', c).success(function(data) {
+	    	$http.post('http://localhost:3000/categories', c, {withCredentials: true}).success(function(data) {
 	    		c.id = data.id;
 		    	$scope.categories.push(c);
 		    });
 	    };
 
 	    $scope.deleteCategory = function(categoryId) {
-	    	$http.delete('http://localhost:3000/categories/' + categoryId).success(function(data) {
+	    	$http.delete('http://localhost:3000/categories/' + categoryId, {withCredentials: true}).success(function(data) {
 	    		var categories = $scope.categories;
 		    	for (var categoryKey in categories) {
 		    		if (categories[categoryKey].id == categoryId) {

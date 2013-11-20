@@ -45,7 +45,7 @@ exports.delete = function(req, res) {
 	for(var accountKey in accounts) {
 		if (accounts[accountKey].id == accountId) {
 			accounts.splice(accountKey, 1);
-			res.send(200);
+			return res.send(200);
 		}
 	}
 
@@ -56,12 +56,12 @@ exports.detail = function(req, res) {
 	if (req.params.id === undefined || isNaN(Number(req.params.id))) {
 		return res.json(400, {message:"Bad Data"});
 	}
-
+	console.log(req.user);
 	var accountId = req.params.id;
 
 	for(var accountKey in accounts) {
 		if (accounts[accountKey].id == accountId) {
-			res.json(accounts[accountKey]);
+			return res.json(accounts[accountKey]);
 		}
 	}
 

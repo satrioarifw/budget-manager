@@ -20,9 +20,11 @@ exports.create = function(req, res) {
 	for(var accountKey in accounts) {
 		if (accounts[accountKey].id == accountId) {
 			accounts[accountKey].records.push(record);
-			res.json(200, {id:record.id});
+			return res.json(200, {id:record.id});
 		}
 	}
+
+	res.json(400, {message:"Bad Data"});
 };
 
 exports.delete = function(req, res) {
@@ -39,7 +41,7 @@ exports.delete = function(req, res) {
 			for (var recordKey in records) {
 				if (records[recordKey].id == recordId) {	
 					accounts[accountKey].records.splice(recordKey, 1);
-					res.send(200);
+					return res.send(200);
 				}
 			}
 		}

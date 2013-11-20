@@ -2,7 +2,7 @@ budgetControllers.controller('AccountListCtrl', ['$scope', '$http',
 	function AccountListCtrl($scope, $http) {
 		$scope.accounts = [];
 
-	    $http.get('http://localhost:3000/accounts').success(function(data) {
+	    $http.get('http://localhost:3000/accounts', {withCredentials: true}).success(function(data) {
 	    	$scope.accounts = data;
 	    });
 
@@ -19,14 +19,14 @@ budgetControllers.controller('AccountListCtrl', ['$scope', '$http',
 	    	a.balance 	= 0;
 
 	    	//Save Account
-	    	$http.post('http://localhost:3000/accounts', a).success(function(data) {
+	    	$http.post('http://localhost:3000/accounts', a, {withCredentials: true}).success(function(data) {
 	    		a.id = data.id;
 		    	$scope.accounts.push(a);
 		    });
 	    };
 
 	    $scope.deleteAccount = function(accountId) {
-	    	$http.delete('http://localhost:3000/accounts/' + accountId).success(function(data) {
+	    	$http.delete('http://localhost:3000/accounts/' + accountId, {withCredentials: true}).success(function(data) {
 	    		var accounts = $scope.accounts;
 		    	for (var accountKey in accounts) {
 		    		if (accounts[accountKey].id == accountId) {
@@ -45,13 +45,13 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 		$scope.account 		= {};
 		var account_id		= $routeParams.accountId;
 
-		$http.get('http://localhost:3000/accounts/' + account_id).success(function(data) {
+		$http.get('http://localhost:3000/accounts/' + account_id, {withCredentials: true}).success(function(data) {
 			$scope.account = data;
 		}).error(function(data, status) {
 			$location.path("/accounts");
 		});
 
-		$http.get('http://localhost:3000/categories').success(function(data) {
+		$http.get('http://localhost:3000/categories', {withCredentials: true}).success(function(data) {
 	    	$scope.categories = data;
 	    })
 
@@ -91,7 +91,7 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 
 
 	    	//Save Record
-	    	$http.post('http://localhost:3000/accounts/' + account_id + '/records', r).success(function(data) {
+	    	$http.post('http://localhost:3000/accounts/' + account_id + '/records', r, {withCredentials: true}).success(function(data) {
 	    		r.id = data.id;
 	    		//TODO Add data.balance with the new balance updated from the server
 		    	$scope.account.records.push(r)
@@ -99,7 +99,7 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 	    };
 
 	    $scope.deleteRecord = function(record) {
-	    	$http.delete('http://localhost:3000/accounts/' + account_id + '/records/' + record.id).success(function(data) {
+	    	$http.delete('http://localhost:3000/accounts/' + account_id + '/records/' + record.id, {withCredentials: true}).success(function(data) {
 		    	var records = $scope.account.records;
 		    	for (var recordKey in records) {
 		    		if (records[recordKey].id == record.id) {
