@@ -33,4 +33,7 @@ exports.userIsAuthenticated = function userIsAuthenticated(req, res, next) {
   res.send(401);
 };
 
-//TODO Create autorization middleware.
+//TODO Create autorization (middleware ?).
+exports.userIsAutorized = function userIsAutorized(objectUserId) {
+  return (req.user._id == objectUserId);
+}

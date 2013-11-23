@@ -56,7 +56,7 @@ exports.detail = function(req, res) {
 	if (req.params.id === undefined || isNaN(Number(req.params.id))) {
 		return res.json(400, {message:"Bad Data"});
 	}
-	console.log(req.user);
+	
 	var accountId = req.params.id;
 
 	for(var accountKey in accounts) {
