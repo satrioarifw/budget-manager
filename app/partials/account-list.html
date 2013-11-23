@@ -31,7 +31,7 @@
 			<tr ng-repeat="account in accounts">
 				<td>{{account.name}}</td>
 				<td>{{account.currency}} {{account.balance}}</td>
-				<td><a href="#/accounts/{{account.id}}"><button type="submit" class="btn btn-success btn-xs">Details</button></a> <button type="submit" class="btn btn-danger btn-xs" ng-click="deleteAccount(account.id)">Delete</button></td>
+				<td><a href="#/accounts/{{account._id}}"><button type="submit" class="btn btn-success btn-xs">Details</button></a> <button type="submit" class="btn btn-danger btn-xs" ng-click="deleteAccount(account._id)">Delete</button></td>
 			</tr>
 	    </tbody>
   	</table>

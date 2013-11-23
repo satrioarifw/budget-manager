@@ -1,5 +1,4 @@
-//Mocks
-var accounts = require('../mock/accounts.json');
+var db = require('../config/database.js');
 
 exports.create = function(req, res) {
 	if (req.body.amount === undefined || isNaN(Number(req.body.amount)) || req.body.category === undefined || req.body.date === undefined
@@ -7,24 +6,36 @@ exports.create = function(req, res) {
 		return res.json(400, {message:"Bad Data"});
 	}
 
-	var record = new Object();
+	var accountId = req.params.accountId;
+
+	//TODO Check if user_id == account.user_id before adding the record.
+
+	var record = new db.recordModel();
+	record.account_id = accountId;
+	record.user_id = req.user._id;
 	record.amount = req.body.amount;
 	record.category	= req.body.category;
 	record.date	= req.body.date;
 	record.description = req.body.description;
-	record.is_expense = req.body.is_expense;
-	record.id = Math.ceil(Math.random() * 1000000); //TODO Change when integrated with MongoDB
+	record.is_expense = req.body.is_expense;	
 
-	var accountId = req.params.accountId;
-
-	for(var accountKey in accounts) {
-		if (accounts[accountKey].id == accountId) {
-			accounts[accountKey].records.push(record);
-			return res.json(200, {id:record.id});
+	record.save(function(err) {
+		if (err) {
+			console.log(err);
+			return res.send(400);
 		}
-	}
 
-	res.json(400, {message:"Bad Data"});
+		if (record.is_expense) {
+			db.accountModel.update({_id:accountId}, { $inc: { balance: -record.amount } }, function(err, nbRows, raw) {
+				return res.json(200, record);
+			});
+		}
+		else {
+			db.accountModel.update({_id:accountId}, { $inc: { balance: record.amount } }, function(err, nbRows, raw) {
+				return res.json(200, record);
+			});
+		}
+	});
 };
 
 exports.delete = function(req, res) {
@@ -35,17 +46,24 @@ exports.delete = function(req, res) {
 	var recordId = req.params.recordId;
 	var accountId = req.params.accountId;
 
-	for (var accountKey in accounts) {
-		if (accounts[accountKey].id == accountId) {
-			var records = accounts[accountKey].records;
-			for (var recordKey in records) {
-				if (records[recordKey].id == recordId) {	
-					accounts[accountKey].records.splice(recordKey, 1);
-					return res.send(200);
-				}
-			}
+	db.recordModel.findOne({_id: recordId, account_id: accountId, user_id: req.user._id}, function(err, record) {
+		if (err) {
+			console.log(err);
+			return res.send(400);
 		}
-	}
-	res.json(400, {message:"Bad Data"});
+
+		if (record.is_expense) {
+			db.accountModel.update({_id:accountId}, { $inc: { balance: record.amount } }, function(err, nbRows, raw) {
+				record.remove();
+				return res.json(200, record);
+			});
+		}
+		else {
+			db.accountModel.update({_id:accountId}, { $inc: { balance: -record.amount } }, function(err, nbRows, raw) {
+				record.remove();
+				return res.json(200, record);
+			});
+		}		
+	});
 };
 

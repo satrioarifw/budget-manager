@@ -15,13 +15,10 @@ budgetControllers.controller('AccountListCtrl', ['$scope', '$http',
 	    	var a 		= new Object();
 	    	a.name 		= account.name;
 	    	a.currency 	= account.currency;
-	    	a.records 	= new Array();
-	    	a.balance 	= 0;
 
 	    	//Save Account
 	    	$http.post('http://localhost:3000/accounts', a, {withCredentials: true}).success(function(data) {
-	    		a.id = data.id;
-		    	$scope.accounts.push(a);
+		    	$scope.accounts.push(data);
 		    });
 	    };
 
@@ -29,7 +26,7 @@ budgetControllers.controller('AccountListCtrl', ['$scope', '$http',
 	    	$http.delete('http://localhost:3000/accounts/' + accountId, {withCredentials: true}).success(function(data) {
 	    		var accounts = $scope.accounts;
 		    	for (var accountKey in accounts) {
-		    		if (accounts[accountKey].id == accountId) {
+		    		if (accounts[accountKey]._id == accountId) {
 		    			$scope.accounts.splice(accountKey, 1);
 		    			return ;
 		    		}
@@ -55,21 +52,6 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 	    	$scope.categories = data;
 	    })
 
-		//TODO Calculated by Node.js, use $scope.account.balance, delete this method
-	    $scope.getBalance = function() {
-	    	var records = $scope.account.records;
-	    	var balance = 0.0;
-	    	for (var recordKey in records) {
-	    		if (records[recordKey].is_expense) {
-	    			balance -= records[recordKey].amount;
-	    		}
-	    		else {
-	    			balance += records[recordKey].amount;
-	    		}
-	    	}
-	    	return balance;
-	    };
-
 	    $scope.addRecord = function(record) {
 	    	if (record === undefined) {
 	    		return ;
@@ -92,17 +74,27 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 
 	    	//Save Record
 	    	$http.post('http://localhost:3000/accounts/' + account_id + '/records', r, {withCredentials: true}).success(function(data) {
-	    		r.id = data.id;
-	    		//TODO Add data.balance with the new balance updated from the server
-		    	$scope.account.records.push(r)
+	    		if (data.is_expense) {
+	    			$scope.account.balance -= data.amount;
+	    		}
+	    		else {
+	    			$scope.account.balance += data.amount;
+	    		}
+		    	$scope.account.records.push(data)
 		    });
 	    };
 
 	    $scope.deleteRecord = function(record) {
-	    	$http.delete('http://localhost:3000/accounts/' + account_id + '/records/' + record.id, {withCredentials: true}).success(function(data) {
+	    	$http.delete('http://localhost:3000/accounts/' + account_id + '/records/' + record._id, {withCredentials: true}).success(function(data) {
 		    	var records = $scope.account.records;
 		    	for (var recordKey in records) {
-		    		if (records[recordKey].id == record.id) {
+		    		if (records[recordKey]._id == record._id) {
+		    			if (records[recordKey].is_expense) {
+			    			$scope.account.balance += records[recordKey].amount;
+			    		}
+			    		else {
+			    			$scope.account.balance -= records[recordKey].amount;
+			    		}
 		    			return $scope.account.records.splice(recordKey, 1);
 		    		}
 		    	}

@@ -1,7 +1,6 @@
 var mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;
-exports.mongoose = mongoose;
 
 var uristring = 'mongodb://localhost/budget';
 
@@ -18,14 +17,30 @@ mongoose.connect(uristring, mongoOptions, function (err, res) {
 var Schema = mongoose.Schema;
 
 // User schema
-var userSchema = new Schema({
+var User = new Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true}
 });
 
+var Account = new Schema({
+  user_id: { type: Schema.ObjectId, ref: 'User', required: true },
+  name: { type: String, required: true },
+  currency: { type: String, required: true },
+  balance: { type: Number, required: true },
+});
 
-// Bcrypt middleware
-userSchema.pre('save', function(next) {
+var Record = new Schema({
+  account_id: { type: Schema.ObjectId, ref: 'Account', required: true },
+  user_id: { type: Schema.ObjectId, ref: 'User', required: true },
+  category: { type: String, required: true },
+  amount: { type: Number, required: true },
+  date: { type: Date, default: Date.now },
+  is_expense: { type: Boolean, default: true },
+  description: { type: String }
+});
+
+// Bcrypt middleware on UserSchema
+User.pre('save', function(next) {
   var user = this;
 
   if(!user.isModified('password')) return next();
@@ -41,14 +56,19 @@ userSchema.pre('save', function(next) {
   });
 });
 
-// Password verification
-userSchema.methods.comparePassword = function(candidatePassword, cb) {
+//Password verification
+User.methods.comparePassword = function(candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
     if(err) return cb(err);
     cb(null, isMatch);
   });
 };
 
-// Export user model
-var userModel = mongoose.model('User', userSchema);
+var userModel = mongoose.model('User', User);
+var accountModel = mongoose.model('Account', Account);
+var recordModel = mongoose.model('Record', Record);
+
+// Export Models
 exports.userModel = userModel;
+exports.accountModel = accountModel;
+exports.recordModel = recordModel;

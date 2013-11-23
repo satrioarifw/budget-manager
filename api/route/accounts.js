@@ -1,21 +1,14 @@
-//Mocks
-var accounts = require('../mock/accounts.json');
+var db = require('../config/database.js');
 
 exports.list = function(req, res) {
-	for (var accountKey in accounts) {
-		var balance = 0.0;
-		for (var recordKey in accounts[accountKey].records) {
-			if (accounts[accountKey].records[recordKey].is_expense) {
-				balance -= accounts[accountKey].records[recordKey].amount;
-			}
-			else {
-				balance += accounts[accountKey].records[recordKey].amount;
-			}
+	db.accountModel.find({user_id: req.user._id}, function(err, results) {
+		if (err) {
+			console.log(err);
+			return res.send(400);
 		}
-		accounts[accountKey].balance = balance;
-	}
 
-  	res.json(accounts);
+		return res.json(results);
+	});
 };
 
 exports.create = function(req, res) {
@@ -23,48 +16,73 @@ exports.create = function(req, res) {
 		return res.json(400, {message:"Bad Data"});
 	}
 
-	var account 		= new Object();
+	var account 		= new db.accountModel();
 	account.name 		= req.body.name;
 	account.currency 	= req.body.currency;
-	account.id 			= Math.ceil(Math.random() * 1000000); //TODO Change when integrated with MongoDB
 	account.balance 	= 0;
-	account.records		= [];
+	account.user_id		= req.user._id
 
-
-	accounts.push(account);
-	res.json(200, {id:account.id});
+	account.save(function(err) {
+		if (err) {
+			console.log(err);
+			return res.send(400);
+		}
+		return res.json(200, account);
+	});
 };
 
 exports.delete = function(req, res) {
-	if (req.params.id === undefined || isNaN(Number(req.params.id))) {
+	if (req.params.id === undefined) {
 		return res.json(400, {message:"Bad Data"});
 	}
 
 	var accountId = req.params.id;
 
-	for(var accountKey in accounts) {
-		if (accounts[accountKey].id == accountId) {
-			accounts.splice(accountKey, 1);
-			return res.send(200);
+	db.accountModel.findOne({user_id: req.user._id, _id: accountId}, function(err, result) {
+		if (err) {
+			console.log(err);
+			return res.send(400);
 		}
-	}
 
-	res.json(400, {message:"Bad Data"});
+		db.recordModel.find({account_id: result._id}, function(err, records) {
+			if (err) {
+				console.log(err);
+				return res.send(400);
+			}
+			records.forEach(function(record) {
+				record.remove();
+			})
+
+			result.remove();
+			return res.send(200);
+		});
+	});
 };
 
 exports.detail = function(req, res) {
-	if (req.params.id === undefined || isNaN(Number(req.params.id))) {
+	if (req.params.id === undefined) {
 		return res.json(400, {message:"Bad Data"});
 	}
 	
 	var accountId = req.params.id;
 
-	for(var accountKey in accounts) {
-		if (accounts[accountKey].id == accountId) {
-			return res.json(accounts[accountKey]);
+	db.accountModel.findOne({user_id: req.user._id, _id: accountId}).lean().exec(function(err, result) {
+		if (err) {
+			console.log(err);
+			return res.send(400);
 		}
-	}
 
-	res.json(400, {message:"Bad Data"});
+		db.recordModel.find({account_id: accountId, user_id: req.user._id}, function(err, records) {
+			if (err) {
+				console.log(err);
+				return res.send(400);
+			}
+
+			result.records = records;
+
+			return res.json(result);
+		});
+
+	});
 };
 
