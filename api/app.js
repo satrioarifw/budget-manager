@@ -33,6 +33,8 @@ app.all('*', function(req, res, next) {
 
 app.post('/login', routes.users.login);
 
+app.post('/register', routes.users.register);
+
 app.get('/logout', pass.userIsAuthenticated, routes.users.logout);
 
 //Get all accounts and compute balance.

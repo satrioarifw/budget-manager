@@ -7,11 +7,13 @@ var budgetApp = angular.module('budgetApp', [
   'budgetControllers',
 ]);
 
-budgetApp.factory('UserService', [function() {
+budgetApp.factory('UserService', ['$rootScope', function($rootScope) {
     var user = {
       isLogged: false,
-      username: ''
+      user: {}
     };
+
+    $rootScope.user = user;
 
     return user;
 }]);
@@ -51,8 +53,18 @@ budgetApp.config(['$routeProvider',
       }).
       when('/login', {
         templateUrl: 'partials/login.html',
-        controller: 'LoginCtrl',
+        controller: 'UserLoginCtrl',
         access: { requiredLogin: false }
+      }).
+      when('/register', {
+        templateUrl: 'partials/register.html',
+        controller: 'UserRegisterCtrl',
+        access: { requiredLogin: false }
+      }).
+      when('/logout', {
+        templateUrl: 'partials/login.html',
+        controller: 'UserLogoutCtrl',
+        access: { requiredLogin: true }
       }).
       otherwise({
         redirectTo: '/accounts',
