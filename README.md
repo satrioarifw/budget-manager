@@ -61,4 +61,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-[screenshot-detail]: http://imageshack.com/a/img69/4697/3tdj.png
+[screenshot-detail]: http://imageshack.com/a/img811/3061/01uy.png
