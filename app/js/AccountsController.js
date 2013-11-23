@@ -44,6 +44,7 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 
 		$http.get('http://localhost:3000/accounts/' + account_id, {withCredentials: true}).success(function(data) {
 			$scope.account = data;
+			updateChart();
 		}).error(function(data, status) {
 			$location.path("/accounts");
 		});
@@ -80,7 +81,9 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 	    		else {
 	    			$scope.account.balance += data.amount;
 	    		}
+
 		    	$scope.account.records.push(data)
+		    	updateChart();
 		    });
 	    };
 
@@ -95,13 +98,15 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 			    		else {
 			    			$scope.account.balance -= records[recordKey].amount;
 			    		}
-		    			return $scope.account.records.splice(recordKey, 1);
+			    		
+		    			$scope.account.records.splice(recordKey, 1);
+		    			updateChart();
 		    		}
 		    	}
 		    });
 	    };
 
-	    function displayChart() {
+	    function updateChart() {
 	    	var records = $scope.account.records;
 	    	var totalExpense = 0;
 	    	var totalIncome = 0;
@@ -115,8 +120,8 @@ budgetControllers.controller('AccountDetailCtrl', ['$scope', '$routeParams', '$h
 	    		}
 	    	}
 
-	    	var pieData = [{value: totalExpense,color:"#F38630"},
-		        		{value : totalIncome,color : "#E0E4CC"}];
+	    	var pieData = [{value: totalExpense,color:"#f2dede"},
+		        		{value : totalIncome,color : "#dff0d8"}];
 
 
 	      	//Display the data
