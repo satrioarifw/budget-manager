@@ -6,6 +6,7 @@
 
 Budget Manager is a simple web application based on AngularJS and Bootstrap for the frontend, and Node.js with MongoDB for the backend.
 It allow you to add expense/income records and know the current balance of your account.
+You can create multiple accounts and the application is multi-tenant.
 
 ## Installation
 
@@ -15,20 +16,6 @@ Then, go inside the api folder: `cd api`
 
 And install all the npm dependencies: `npm install express mongoose passport passport-local bcrypt`
 
-
-## Roadmap
-
-### Version 1
-Only the AngularJS part without any persistences.
-
-* Add Expense Record
-* Add Income Record
-* Delete Record
-* Load Default Records from a mock
-* Only one Account supported
-
-### Version 2
-* Multiple Accounts
 
 ## Stack
 
