@@ -72,6 +72,10 @@ exports.detail = function(req, res) {
 			return res.send(400);
 		}
 
+		if (result === null) {
+			return res.json(400);
+		}
+
 		db.recordModel.find({account_id: accountId, user_id: req.user._id}, function(err, records) {
 			if (err) {
 				console.log(err);
