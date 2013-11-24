@@ -16,6 +16,12 @@ Then, go inside the api folder: `cd api`
 
 And install all the npm dependencies: `npm install express mongoose passport passport-local bcrypt`
 
+## Run
+
+Go to the api folder and run the node.js server: `node app.js`
+
+Then, open your browser on `http://localhost/path/app/`
+
 
 ## Stack
 
