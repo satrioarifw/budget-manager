@@ -21,7 +21,7 @@
 		<tbody>
 			<tr ng-repeat="category in categories">
 				<td>{{category.name}}</td>
-				<td><button type="submit" class="btn btn-danger btn-xs" ng-click="deleteCategory(category.id)">Delete</button></td>
+				<td><button type="submit" class="btn btn-danger btn-xs" ng-click="deleteCategory(category._id)">Delete</button></td>
 			</tr>
 	    </tbody>
   	</table>
