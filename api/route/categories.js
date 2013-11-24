@@ -1,44 +1,49 @@
-//Mocks
-var categories = require('../mock/categories.json');
+var db = require('../config/database.js');
 
 exports.list = function(req, res) {
-  	res.json(categories);
+  	db.categoryModel.find({user_id: req.user._id}, function(err, results) {
+  		if (err) {
+  			console.log(err);
+  			return res.send(400);
+  		}
+
+  		return res.json(results);
+  	});
 }
 
 exports.create = function(req, res) {
 	if (req.body.name === undefined) {
-		return res.json(400, {message:"Bad Data"});
+		return res.json(400);
 	}
 
-	var category = {};
+	var category = new db.categoryModel();
 	category.name = req.body.name;
+	category.user_id = req.user._id;
 
-	for (var categoryKey in categories) {
-		if (categories[categoryKey].name == category.name) {
-			return res.json(400, {message:"Bad Data"});
+	category.save(function(err) {
+		if (err) {
+			console.log(err);
+			return res.send(400);
 		}
-	}
 
-	//generate id
-	category.id = Math.ceil(Math.random() * 1000000); //TODO Change when integrated with MongoDB
-
-	categories.push(category);
-	return res.json(200, category);
+		return res.json(category);
+	});
 }
 
 exports.delete = function(req, res) {
 	if (req.params.categoryId === undefined) {
-		return res.json(400, {message:"Bad Data"});
+		return res.json(400);
 	}
 
 	var categoryId = req.params.categoryId;
-	for (var categoryKey in categories) {
-		if (categories[categoryKey].id == categoryId) {
-			categories.splice(categoryKey, 1);
-			return res.send(200);
-		}
-	}
 
-	//Delete from categories
-	return res.send(400, {message:"Bad Data"});
+	db.categoryModel.findOne({user_id: req.user._id, _id: categoryId}, function(err, result) {
+		if (err) {
+			console.log(err);
+			return res.send(400);
+		}
+
+		result.remove();
+		return res.send(200);
+	});
 }

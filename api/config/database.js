@@ -22,6 +22,11 @@ var User = new Schema({
   password: { type: String, required: true}
 });
 
+var Category = new Schema({
+  user_id: { type: Schema.ObjectId, ref: 'User', required: true },
+  name: { type: String, required: true }
+});
+
 var Account = new Schema({
   user_id: { type: Schema.ObjectId, ref: 'User', required: true },
   name: { type: String, required: true },
@@ -67,9 +72,11 @@ User.methods.comparePassword = function(candidatePassword, cb) {
 var userModel = mongoose.model('User', User);
 var accountModel = mongoose.model('Account', Account);
 var recordModel = mongoose.model('Record', Record);
+var categoryModel = mongoose.model('Category', Category);
 
 
 // Export Models
 exports.userModel = userModel;
 exports.accountModel = accountModel;
 exports.recordModel = recordModel;
+exports.categoryModel = categoryModel;
