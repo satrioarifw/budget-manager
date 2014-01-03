@@ -55,3 +55,7 @@ THE SOFTWARE.
 
 
 [screenshot-detail]: http://imageshack.com/a/img811/3061/01uy.png
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/kdelemme/budget-manager/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
