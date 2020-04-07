@@ -8,9 +8,6 @@ Budget Manager is a simple web application based on AngularJS and Bootstrap for 
 It allow you to add expense/income records and know the current balance of your account.
 You can create multiple accounts and the application is multi-tenant.
 
-this modified new branch
-
-
 ## Installation
 
 Get the sources with `git clone https://github.com/kdelemme/budget-manager.git`
